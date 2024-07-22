@@ -28,7 +28,6 @@
             animation: flicker 1s infinite alternate;
         }
         
-        
         #header2 {
             font-size: 30px;
             color: #1A0505;
@@ -44,12 +43,6 @@
             50% {
                 opacity: 0;
             }
-        }
-
-        #tense {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #000;
         }
 
         #number-container {
@@ -75,47 +68,12 @@
     <div id="header">WARNING!</div>
     <div id="header2">Get Out</div>
     <div class="container">
-        <div id="tense">Tens</div>
         <div id="number-container"></div>
     </div>
     <script>
         const numberContainer = document.getElementById('number-container');
-        const tenseBox = document.getElementById('tense');
-        let number = 100;
-        let interval = 500;
-
-        const milestones = [500, 1000, 1200, 1500, 1750, 2000, 2500, 3000, 4000, 5500, 7000, 10000, 20000, 50000, 100000, 500000];
-
-        function updateTense(number) {
-            const length = number.toString().length;
-            switch (length) {
-                case 1:
-                    tenseBox.textContent = 'Ones';
-                    break;
-                case 2:
-                    tenseBox.textContent = 'Tens';
-                    break;
-                case 3:
-                    tenseBox.textContent = 'Hundreds';
-                    break;
-                case 4:
-                    tenseBox.textContent = 'Thousands';
-                    break;
-                case 5:
-                    tenseBox.textContent = 'Ten Thousands';
-                    break;
-                case 6:
-                    tenseBox.textContent = 'Hundred Thousands';
-                    break;
-                default:
-                    tenseBox.textContent = 'Millions and beyond';
-                    break;
-            }
-        }
-
-        function updateColor(numberBox) {
-            numberBox.style.backgroundColor = '#1A0505'; // Fixed dark red color
-        }
+        let number = 60;
+        const interval = 1000; // 1 second
 
         function updateNumberBoxes(number) {
             numberContainer.innerHTML = '';
@@ -124,39 +82,21 @@
                 const numberBox = document.createElement('div');
                 numberBox.className = 'number-box';
                 numberBox.textContent = digit;
-                updateColor(numberBox);
                 numberContainer.appendChild(numberBox);
             });
         }
 
         function decrementNumber() {
-            number--;
-            if (number < 0) {
-                window.close();
-                return;
-            }
-            updateTense(number);
             updateNumberBoxes(number);
-            adjustSpeed();
-        }
-
-        function adjustSpeed() {
-            for (let i = 0; i < milestones.length; i++) {
-                if (number === milestones[i]) {
-                    interval = 500 / Math.pow(999, i + 1);
-                    break;
-                }
+            if (number === 0) {
+                window.location.href = 'told-you.html';
+            } else {
+                number--;
+                setTimeout(decrementNumber, interval);
             }
-            scheduleNextDecrement();
         }
 
-        function scheduleNextDecrement() {
-            setTimeout(decrementNumber, interval);
-        }
-
-        scheduleNextDecrement();
-        
-        console.log("Why are you here nerd?");
+        decrementNumber();
     </script>
 </body>
 </html>
