@@ -17,5 +17,3 @@ npm init -y
 npm install discord.js-selfbot-v13 readline-sync colors
 
 echo "Setup complete. You can now run the script using: node index.js"
-
-cd zrcs-rpc
